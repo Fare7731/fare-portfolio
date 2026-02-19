@@ -40,7 +40,7 @@ To run this project locally on your machine, follow these steps:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/fare7731/FareOS.git
+   git clone https://github.com/FareEditor/FareOS.git
    cd fare-portfolio
    ```
 
