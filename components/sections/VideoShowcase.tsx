@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VideoItem, Difficulty } from '../../types';
 import { getEmbedUrl } from '../../utils/youtube';
-import { ChevronUpIcon, ChevronDownIcon } from '../Icons';
+import { ChevronUpIcon, ChevronDownIcon, PlayIcon } from '../Icons';
+
+const images = import.meta.glob('./pic/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 
 interface VideoShowcaseProps {
   videos: VideoItem[];
@@ -25,18 +27,43 @@ const DifficultyBadge = ({ level }: { level?: Difficulty }) => {
 
 const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [isScrolling, setIsScrolling] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartY = useRef(0);
+  const iframeRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
+
+  const pauseCurrentVideo = () => {
+    if (playingVideo) {
+      const iframe = iframeRefs.current[playingVideo];
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
+      }
+      setPlayingVideo(null);
+    }
+  };
+
+  const handlePlay = (id: string) => {
+    if (playingVideo && playingVideo !== id) {
+      pauseCurrentVideo();
+    }
+    setPlayingVideo(id);
+    const iframe = iframeRefs.current[id];
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+    }
+  };
 
   const nextVideo = () => {
     if (currentIndex < videos.length - 1) {
+      pauseCurrentVideo();
       setCurrentIndex((prev) => prev + 1);
     }
   };
 
   const prevVideo = () => {
     if (currentIndex > 0) {
+      pauseCurrentVideo();
       setCurrentIndex((prev) => prev - 1);
     }
   };
@@ -114,15 +141,33 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos }) => {
             className={`absolute inset-0 w-full h-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 p-4 lg:pr-24 transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${transitionClass}`}
           >
             {/* Left: Video Embed */}
-            <div className="w-full max-w-2xl lg:w-3/5 aspect-video rounded-xl overflow-hidden bg-black/50 border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,112,187,0.4)] hover:border-accent1/50 group shrink-0">
-              {/* Only render iframe properly if it's active or adjacent, saves resources, but we keep it mounted to allow smooth fades */}
+            <div className="w-full max-w-2xl lg:w-3/5 aspect-video rounded-xl overflow-hidden bg-black/50 border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,112,187,0.4)] hover:border-accent1/50 group shrink-0 relative">
               <iframe
+                ref={(el) => { iframeRefs.current[video.id] = el; }}
                 src={getEmbedUrl(video.url)}
                 title={video.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                className="w-full h-full transition-transform duration-500 group-hover:scale-[1.02]"
+                className="absolute inset-0 w-full h-full transition-transform duration-500 group-hover:scale-[1.02]"
               ></iframe>
+              
+              {playingVideo !== video.id && (
+                <div 
+                  className="absolute inset-0 w-full h-full cursor-pointer z-10"
+                  onClick={() => handlePlay(video.id)}
+                >
+                  <img 
+                    src={images[`./pic/${video.id}.png`] || 'https://picsum.photos/seed/vibrant/1920/1080?blur=4'} 
+                    alt={video.title} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" 
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                    <div className="w-16 h-16 bg-accent1/80 rounded-full flex items-center justify-center backdrop-blur-sm shadow-[0_0_20px_rgba(0,168,255,0.5)] group-hover:scale-110 transition-transform">
+                      <PlayIcon className="w-8 h-8 text-white ml-1" />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Right: Info */}

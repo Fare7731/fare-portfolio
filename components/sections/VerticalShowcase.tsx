@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { VideoItem } from '../../types';
 import { getEmbedUrl } from '../../utils/youtube';
-import { ChevronUpIcon, ChevronDownIcon } from '../Icons';
+import { ChevronUpIcon, ChevronDownIcon, PlayIcon } from '../Icons';
+
+const images = import.meta.glob('./pic/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 
 interface VerticalShowcaseProps {
   videos: VideoItem[];
@@ -9,9 +11,32 @@ interface VerticalShowcaseProps {
 
 const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [isScrolling, setIsScrolling] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartY = useRef(0);
+  const iframeRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
+
+  const pauseCurrentVideo = () => {
+    if (playingVideo) {
+      const iframe = iframeRefs.current[playingVideo];
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
+      }
+      setPlayingVideo(null);
+    }
+  };
+
+  const handlePlay = (id: string) => {
+    if (playingVideo && playingVideo !== id) {
+      pauseCurrentVideo();
+    }
+    setPlayingVideo(id);
+    const iframe = iframeRefs.current[id];
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*');
+    }
+  };
 
   // Chunk videos into pages of 3 (rows of 3)
   const chunkSize = 3;
@@ -22,12 +47,14 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
 
   const nextPage = () => {
     if (currentPage < pages.length - 1) {
+      pauseCurrentVideo();
       setCurrentPage((prev) => prev + 1);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
+      pauseCurrentVideo();
       setCurrentPage((prev) => prev - 1);
     }
   };
@@ -120,12 +147,31 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
                   >
                     <div className="flex-1 rounded-2xl overflow-hidden bg-black/50 border border-white/10 shadow-xl transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(54,0,120,0.5)] group-hover:border-accent2/50 relative z-10 w-full">
                       <iframe
+                        ref={(el) => { iframeRefs.current[video.id] = el; }}
                         src={getEmbedUrl(video.url)}
                         title={video.title}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
-                        className="w-full h-full object-cover"
+                        className="absolute inset-0 w-full h-full object-cover"
                       ></iframe>
+                      
+                      {playingVideo !== video.id && (
+                        <div 
+                          className="absolute inset-0 w-full h-full cursor-pointer z-10"
+                          onClick={() => handlePlay(video.id)}
+                        >
+                          <img 
+                            src={images[`./pic/${video.id}.png`] || 'https://picsum.photos/seed/vibrant/1080/1920?blur=4'} 
+                            alt={video.title} 
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" 
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                            <div className="w-14 h-14 bg-accent2/80 rounded-full flex items-center justify-center backdrop-blur-sm shadow-[0_0_20px_rgba(54,0,120,0.5)] group-hover:scale-110 transition-transform">
+                              <PlayIcon className="w-6 h-6 text-white ml-1" />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     
                     <div className="mt-4 px-2 opacity-80 group-hover:opacity-100 transition-opacity">

@@ -13,5 +13,5 @@ export const getEmbedUrl = (url: string): string => {
     return url;
   }
 
-  return `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+  return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&rel=0`;
 };
