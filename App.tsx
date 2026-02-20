@@ -44,9 +44,9 @@ const staticVideoData: VideoData = {
     },
     {
       id: "v-3",
-      title: "Podcasts are almighty",
-      text: "Medical concerns in simple terms.",
-      url: "https://youtu.be/Iob_g3vITyI"
+      title: "Movies for Bartenders",
+      text: "Beautiful storytelling enhanced by visuals",
+      url: "https://youtu.be/JA7JQKE6um0?list=TLGG4Zb8KNsSKaEyMDAyMjAyNg"
     }
   ],
   motionGraphics: [
