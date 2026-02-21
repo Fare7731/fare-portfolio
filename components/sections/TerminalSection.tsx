@@ -2,7 +2,29 @@ import React from 'react';
 
 const TerminalSection: React.FC = () => {
   return (
-    <div className="w-full h-full p-4 md:p-6 lg:p-8 font-mono text-xs md:text-sm text-slate-300 overflow-y-auto">
+    <div className="w-full h-full p-4 md:p-6 lg:p-8 font-mono text-xs md:text-sm text-slate-300 overflow-y-auto terminal-scrollbar">
+      <style>{`
+        .terminal-scrollbar::-webkit-scrollbar {
+          width: 14px;
+          background: #0f172a;
+        }
+        .terminal-scrollbar::-webkit-scrollbar-track {
+          background: #0f172a;
+          border-left: 1px solid #1e293b;
+        }
+        .terminal-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #334155;
+          border: 2px solid #0f172a;
+          min-height: 40px;
+        }
+        .terminal-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: #475569;
+        }
+        .terminal-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #334155 #0f172a;
+        }
+      `}</style>
       {/* Command Prompt */}
       <div className="flex flex-wrap gap-2 mb-6">
         <span className="text-red-400 font-bold">[fare@fuckwin <span className="text-slate-300">~</span>]$</span>
@@ -50,8 +72,8 @@ const TerminalSection: React.FC = () => {
           <div><span className="text-accent1 font-bold">Memory:</span> 15.86 GiB / 63.60 GiB (25%)</div>
           <div><span className="text-accent1 font-bold">Swap:</span> 105.20 MiB / 4.00 GiB (3%)</div>
           <div><span className="text-accent1 font-bold">Disk (/):</span> 1.49 GiB / 1006.85 GiB (0%) - ext4</div>
-          <div><span className="text-accent1 font-bold">Disk (/dev/sda1):</span> 597.78 GiB / 1.82 TiB (32%) - ext4</div>
-          <div><span className="text-accent1 font-bold">Disk (/dev/nvme1n1):</span> 30.24 GiB / 953.81 GiB (3%) ext4</div>
+          <div><span className="text-accent1 font-bold">Disk (/dev/sda1):</span> 597.78 GiB / 1.82 TiB (32%) - 9p</div>
+          <div><span className="text-accent1 font-bold">Disk (/dev/nvme1n1):</span> 30.24 GiB / 953.81 GiB (3%) - 9p</div>
           <div><span className="text-accent1 font-bold">Local IP (Ethernet):</span> 192.168.1.2/24</div>
           <div><span className="text-accent1 font-bold">Locale:</span> en_US.UTF-8</div>
         </div>
