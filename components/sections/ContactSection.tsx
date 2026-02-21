@@ -63,7 +63,7 @@ const ContactSection: React.FC = () => {
       </div>
 
       <a 
-        href="#" 
+        href="https://t.me/fare_tgc" 
         target="_blank" 
         rel="noopener noreferrer"
         className="relative inline-block group px-8 py-4 bg-gradient-to-r from-accent1 to-accent2 rounded-lg font-heading text-white shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 active:scale-95"
