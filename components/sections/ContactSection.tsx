@@ -51,9 +51,9 @@ const ContactSection: React.FC = () => {
       </div>
 
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-heading text-white mb-2">Let's Connect</h2>
-        <p className="text-slate-400 font-mono text-sm hidden md:block">Scan to reach out</p>
-        <p className="text-slate-400 font-mono text-sm md:hidden">Tap to connect</p>
+        <h2 className="text-4xl font-heading text-white mb-2">Ready to update your videos?</h2>
+        <p className="text-slate-400 font-mono text-sm hidden md:block">So go ahead, scan and let's get started.</p>
+        <p className="text-slate-400 font-mono text-sm md:hidden">Or you can click on the buttons</p>
       </div>
 
       <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-24 mb-16">
