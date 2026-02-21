@@ -159,6 +159,36 @@ const App: React.FC = () => {
     setWorkspaceSections(prev => ({ ...prev, [currentWorkspace]: 'Terminal' }));
   };
 
+  // Mobile Back Button Handler
+  const prevActiveSection = React.useRef<SectionType | null>(null);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) return;
+
+    const activeSection = workspaceSections[currentWorkspace];
+
+    const handlePopState = (event: PopStateEvent) => {
+      // If a section is open, close it
+      if (activeSection) {
+        setWorkspaceSections(prev => ({ ...prev, [currentWorkspace]: null }));
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    // Push state when opening a section
+    if (activeSection && !prevActiveSection.current) {
+      window.history.pushState({ section: activeSection }, '');
+    }
+
+    prevActiveSection.current = activeSection;
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [workspaceSections, currentWorkspace]);
+
   // Standard Desktop App Render
   return (
     <div className="relative w-full h-screen overflow-hidden flex flex-col font-text text-slate-200">
