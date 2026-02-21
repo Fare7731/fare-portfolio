@@ -143,9 +143,10 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
                 return (
                   <div 
                     key={video.id} 
-                    className={`h-[80%] max-h-[550px] aspect-[9/16] relative flex flex-col group transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${transitionClass}`}
+                    className={`relative flex flex-col group transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] flex-shrink-0 ${transitionClass}`}
+                    style={{ width: 'calc(min(60vh, 500px) * 9 / 16)' }}
                   >
-                    <div className="flex-1 rounded-2xl overflow-hidden bg-black/50 border border-white/10 shadow-xl transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(54,0,120,0.5)] group-hover:border-accent2/50 relative z-10 w-full">
+                    <div className="h-[60vh] max-h-[500px] w-full rounded-2xl overflow-hidden bg-black/50 border border-white/10 shadow-xl transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(54,0,120,0.5)] group-hover:border-accent2/50 relative z-10">
                       <iframe
                         ref={(el) => { iframeRefs.current[video.id] = el; }}
                         src={getEmbedUrl(video.url)}
