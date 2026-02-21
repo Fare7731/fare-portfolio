@@ -153,7 +153,94 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
   ];
 
   return (
-    <div className="w-full h-8 bg-windowBg/90 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-4 text-xs font-mono select-none z-50 relative shadow-sm">
+    <>
+      {/* Mobile Layout */}
+      <div className="md:hidden w-full h-8 bg-windowBg/90 backdrop-blur-md border-b border-white/10 flex items-center justify-center px-4 text-xs font-mono select-none z-50 relative shadow-sm">
+        <div className="relative widget-container">
+          <div 
+            className={`flex items-center space-x-2 font-bold cursor-pointer px-3 py-1 rounded-md transition-colors ${activeWidget === 'calendar' ? 'bg-white/10 text-white' : 'hover:bg-white/5 text-slate-200'}`}
+            onClick={() => toggleWidget('calendar')}
+          >
+            <span>{topBarDate}</span>
+            <span className="text-accent1">{topBarTime}</span>
+          </div>
+
+          {renderedWidget === 'calendar' && (
+            <div className="absolute top-10 left-1/2 -translate-x-1/2 z-50">
+              <div className={`w-[340px] bg-[#2D323E]/95 backdrop-blur-xl border border-white/5 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.5)] cursor-default origin-top ${isWidgetClosing ? 'animate-widget-out' : 'animate-widget-in'}`}>
+                
+                {/* Top: Clock Section */}
+                <div className="flex justify-between items-stretch px-6 pt-6 pb-4">
+                  <div className="flex items-baseline font-mono font-bold tracking-tighter">
+                    <span className="text-[64px] text-[#8AB9F1] leading-[0.8]">{paddedHours}</span>
+                    <span className="text-[42px] text-[#8AB9F1] leading-[0.8] ml-1.5 opacity-90">{paddedMinutes}</span>
+                  </div>
+                  <div className="flex flex-col justify-between items-end py-1">
+                    <span className="text-[22px] font-mono font-bold text-[#A3BE8C] leading-none tracking-wide">{ampm}</span>
+                    <span className="text-[15px] font-mono text-[#EBCB8B] leading-none mb-1">{weekday}</span>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="px-6">
+                  <div className="w-full h-px bg-white/10"></div>
+                </div>
+
+                {/* Bottom: Calendar Section */}
+                <div className="px-6 py-5">
+                  {/* Calendar Header */}
+                  <div className="flex justify-between items-center text-[#8AB9F1] font-mono text-sm mb-5 px-1 font-bold">
+                    <div className="flex items-center gap-2">
+                      <button onClick={prevMonth} className="px-1 hover:text-white transition-colors cursor-pointer">&lt;</button>
+                      <span className="w-20 text-center">{monthName}</span>
+                      <button onClick={nextMonth} className="px-1 hover:text-white transition-colors cursor-pointer">&gt;</button>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={prevYear} className="px-1 hover:text-white transition-colors cursor-pointer">&lt;</button>
+                      <span className="w-10 text-center">{calYear}</span>
+                      <button onClick={nextYear} className="px-1 hover:text-white transition-colors cursor-pointer">&gt;</button>
+                    </div>
+                  </div>
+
+                  {/* Calendar Grid */}
+                  <div className="grid grid-cols-7 gap-y-3 gap-x-1 text-center text-xs font-mono">
+                    {/* Days of Week */}
+                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                      <div key={d} className="text-slate-400 mb-1">{d}</div>
+                    ))}
+                    
+                    {/* Dates */}
+                    {daysArray.map((day, i) => {
+                      if (!day) return <div key={`empty-${i}`} />;
+                      
+                      const isToday = day === currentTime.getDate() && 
+                                      calMonth === currentTime.getMonth() && 
+                                      calYear === currentTime.getFullYear();
+                                      
+                      return (
+                        <div 
+                          key={day} 
+                          className={`w-7 h-7 mx-auto flex items-center justify-center rounded-md transition-colors ${
+                            isToday 
+                              ? 'bg-[#8AB9F1]/20 text-[#8AB9F1] font-bold border border-[#8AB9F1]/30' 
+                              : 'text-slate-200 hover:bg-white/10 cursor-pointer'
+                          }`}
+                        >
+                          {day}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden md:flex w-full h-8 bg-windowBg/90 backdrop-blur-md border-b border-white/10 items-center justify-between px-4 text-xs font-mono select-none z-50 relative shadow-sm">
       {/* Left side: Workspaces */}
       <div className="flex items-center space-x-3 text-slate-400">
         <div className="flex space-x-1">
@@ -429,6 +516,7 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
         </div>
       </div>
     </div>
+    </>
   );
 };
 

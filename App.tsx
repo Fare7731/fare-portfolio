@@ -7,7 +7,6 @@ import VideoShowcase from './components/sections/VideoShowcase';
 import VerticalShowcase from './components/sections/VerticalShowcase';
 import ContactSection from './components/sections/ContactSection';
 import TerminalSection from './components/sections/TerminalSection';
-import { DesktopIcon } from './components/Icons';
 import { SectionType, VideoData } from './types';
 
 const staticVideoData: VideoData = {
@@ -126,7 +125,7 @@ const WorkspaceLayer: React.FC<WorkspaceLayerProps> = ({ isActive, activeSection
 
   return (
     <div 
-      className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center transition-opacity duration-300 ease-in-out ${isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'}`}
+      className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center transition-opacity duration-300 ease-in-out ${isActive ? 'opacity-100 z-10 pointer-events-none' : 'opacity-0 z-0 pointer-events-none'}`}
     >
       {renderedSection && (
         <WindowContainer 
@@ -151,25 +150,6 @@ const App: React.FC = () => {
     2: null,
     3: null
   });
-  
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      const ua = navigator.userAgent;
-      const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-      const isNarrowScreen = window.innerWidth <= 768;
-      
-      setIsMobile(isMobileUA || isNarrowScreen);
-    };
-
-    // Check immediately on mount
-    checkMobile();
-    
-    // Add event listener to re-evaluate on resize
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   const handleSectionChange = (section: SectionType | null) => {
     setWorkspaceSections(prev => ({ ...prev, [currentWorkspace]: section }));
@@ -178,44 +158,6 @@ const App: React.FC = () => {
   const handleOpenTerminal = () => {
     setWorkspaceSections(prev => ({ ...prev, [currentWorkspace]: 'Terminal' }));
   };
-
-  // Prevent rendering anything until the mobile check completes to avoid flashes
-  if (isMobile === null) return null;
-
-  // Fallback view for mobile devices
-  if (isMobile) {
-    return (
-      <div className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center font-text text-slate-200 p-6 text-center z-50">
-        {/* Hemisphere and Backlight Background */}
-        <div className="absolute inset-0 bg-bgMain -z-20 overflow-hidden">
-          <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-[150vw] h-[50vh] bg-accent1 blur-[100px] opacity-40 rounded-full mix-blend-screen -z-10 pointer-events-none"></div>
-          <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-[80%] w-[250vw] aspect-square rounded-full bg-[#02050A] border-t-[1.5px] border-accent1/50 shadow-[inset_0_4px_30px_rgba(0,168,255,0.2)] -z-10 pointer-events-none"></div>
-        </div>
-
-        <div className="bg-windowBg/80 backdrop-blur-xl border border-white/10 p-8 pt-10 rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] max-w-sm w-full flex flex-col items-center animate-slide-up relative overflow-hidden">
-          
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent1 to-transparent opacity-50"></div>
-          
-          <div className="w-20 h-20 bg-accent1/10 rounded-full flex items-center justify-center mb-6 border border-accent1/20 shadow-[0_0_30px_rgba(0,168,255,0.2)]">
-            <DesktopIcon className="w-10 h-10 text-accent1 animate-pulse" />
-          </div>
-          
-          <h1 className="text-2xl font-heading font-bold text-white mb-2">Mobile Adaptation</h1>
-          <h2 className="text-xs font-subheading text-accent1 mb-6 uppercase tracking-widest bg-accent1/10 px-3 py-1 rounded-full border border-accent1/20">Under Development</h2>
-          
-          <p className="text-slate-400 text-sm leading-relaxed mb-8 font-text">
-            FareOS is a highly customized tiling window manager experience specifically optimized for desktop environments. 
-            <br/><br/>
-            Please visit this portfolio from a PC to explore the full layout seamlessly.
-          </p>
-          
-          <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-accent2 to-accent1 w-1/3 rounded-full animate-[fadeOutline_2s_ease-in-out_infinite]"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   // Standard Desktop App Render
   return (
@@ -243,7 +185,7 @@ const App: React.FC = () => {
         />
         
         {/* Window Area with Workspace Layers */}
-        <div className="flex-1 w-full flex flex-col items-center justify-center min-h-0 relative pb-4 z-[45]">
+        <div className="flex-1 w-full flex flex-col items-center justify-center min-h-0 relative pb-4 z-[45] pointer-events-none">
           {[1, 2, 3].map(ws => (
             <WorkspaceLayer
               key={ws}

@@ -3,7 +3,17 @@ import { VideoItem, Difficulty } from '../../types';
 import { getEmbedUrl } from '../../utils/youtube';
 import { ChevronUpIcon, ChevronDownIcon, PlayIcon } from '../Icons';
 
-const images = import.meta.glob('./pic/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
+import fl1 from './pic/fl-1.png';
+import fl2 from './pic/fl-2.png';
+import mg1 from './pic/mg-1.png';
+import mg2 from './pic/mg-2.png';
+
+const images: Record<string, string> = {
+  'fl-1': fl1,
+  'fl-2': fl2,
+  'mg-1': mg1,
+  'mg-2': mg2,
+};
 
 interface VideoShowcaseProps {
   videos: VideoItem[];
@@ -29,9 +39,20 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartY = useRef(0);
+  const touchStartX = useRef(0);
   const iframeRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const pauseCurrentVideo = () => {
     if (playingVideo) {
@@ -86,22 +107,46 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos }) => {
   // Handle touch swipes for mobile users
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
+    touchStartX.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (isScrolling) return;
     
     const touchEndY = e.changedTouches[0].clientY;
+    const touchEndX = e.changedTouches[0].clientX;
+    
     const deltaY = touchStartY.current - touchEndY;
+    const deltaX = touchStartX.current - touchEndX;
 
-    if (deltaY > 50 && currentIndex < videos.length - 1) {
-      setIsScrolling(true);
-      nextVideo();
-      timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
-    } else if (deltaY < -50 && currentIndex > 0) {
-      setIsScrolling(true);
-      prevVideo();
-      timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+    if (isMobile) {
+      // Horizontal swipe for mobile
+      if (Math.abs(deltaX) > 50) { // Threshold
+        if (deltaX > 0 && currentIndex < videos.length - 1) {
+          // Swipe Left -> Next
+          setIsScrolling(true);
+          nextVideo();
+          timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+        } else if (deltaX < 0 && currentIndex > 0) {
+          // Swipe Right -> Prev
+          setIsScrolling(true);
+          prevVideo();
+          timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+        }
+      }
+    } else {
+      // Vertical swipe for desktop
+      if (Math.abs(deltaY) > 50) {
+        if (deltaY > 0 && currentIndex < videos.length - 1) {
+          setIsScrolling(true);
+          nextVideo();
+          timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+        } else if (deltaY < 0 && currentIndex > 0) {
+          setIsScrolling(true);
+          prevVideo();
+          timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+        }
+      }
     }
   };
 
@@ -128,12 +173,23 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos }) => {
       {/* Video Items */}
       {videos.map((video, index) => {
         const isActive = index === currentIndex;
-        // Cinematic ease out transition
-        const transitionClass = isActive 
-          ? 'opacity-100 translate-y-0 scale-100 z-10 pointer-events-auto delay-100' 
-          : index < currentIndex 
-            ? 'opacity-0 -translate-y-16 scale-95 z-0 pointer-events-none'
+        
+        // Determine transition based on device type
+        let transitionClass = '';
+        
+        if (isActive) {
+          transitionClass = 'opacity-100 translate-y-0 translate-x-0 scale-100 z-10 pointer-events-auto delay-100';
+        } else if (index < currentIndex) {
+          // Previous items
+          transitionClass = isMobile 
+            ? 'opacity-0 -translate-x-16 scale-95 z-0 pointer-events-none' 
+            : 'opacity-0 -translate-y-16 scale-95 z-0 pointer-events-none';
+        } else {
+          // Next items
+          transitionClass = isMobile
+            ? 'opacity-0 translate-x-16 scale-95 z-0 pointer-events-none'
             : 'opacity-0 translate-y-16 scale-95 z-0 pointer-events-none';
+        }
 
         return (
           <div 
@@ -157,7 +213,7 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos }) => {
                   onClick={() => handlePlay(video.id)}
                 >
                   <img 
-                    src={images[`./pic/${video.id}.png`] || 'https://picsum.photos/seed/vibrant/1920/1080?blur=4'} 
+                    src={images[video.id] || 'https://picsum.photos/seed/vibrant/1920/1080?blur=4'} 
                     alt={video.title} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" 
                   />
@@ -193,17 +249,28 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos }) => {
 
       {/* Navigation Controls Overlay */}
       {videos.length > 1 && (
-        <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3 z-20 bg-windowBg/60 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+        <div 
+          className={`
+            absolute z-20 bg-windowBg/60 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] flex gap-3
+            ${isMobile 
+              ? 'bottom-6 left-1/2 -translate-x-1/2 flex-row items-center' 
+              : 'right-4 md:right-8 top-1/2 -translate-y-1/2 flex-col items-center'
+            }
+          `}
+        >
           <button
             onClick={prevVideo}
             disabled={currentIndex === 0}
-            className="p-1.5 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors focus:outline-none"
+            className={`
+              p-1.5 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors focus:outline-none
+              ${isMobile ? '-rotate-90' : ''}
+            `}
             title="Previous Video"
           >
             <ChevronUpIcon className="w-5 h-5" />
           </button>
 
-          <div className="flex flex-col gap-3 py-2">
+          <div className={`flex gap-3 py-2 ${isMobile ? 'flex-row' : 'flex-col'}`}>
             {videos.map((_, i) => (
               <button
                 key={i}
@@ -221,7 +288,10 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos }) => {
           <button
             onClick={nextVideo}
             disabled={currentIndex === videos.length - 1}
-            className="p-1.5 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors focus:outline-none"
+            className={`
+              p-1.5 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors focus:outline-none
+              ${isMobile ? '-rotate-90' : ''}
+            `}
             title="Next Video"
           >
             <ChevronDownIcon className="w-5 h-5" />

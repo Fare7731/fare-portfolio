@@ -4,7 +4,7 @@ const avatarImg = new URL('./pic/logo.jpg', import.meta.url).href;
 
 const AboutSection: React.FC = () => {
   return (
-    <div className="relative w-full h-full flex flex-col md:flex-row items-center justify-center gap-12 p-4 animate-fade-in">
+    <div className="relative w-full h-full flex flex-col md:flex-row items-center justify-start md:justify-center gap-6 md:gap-12 p-0 md:p-4 overflow-y-auto md:overflow-hidden animate-fade-in pb-12 md:pb-4 scrollbar-hide">
       {/* Copyright */}
       <div className="absolute top-0 right-0 p-6 z-20 pointer-events-none">
         <span className="font-mono text-[10px] text-slate-500/70 tracking-widest uppercase hidden sm:block text-right">
@@ -33,10 +33,10 @@ const AboutSection: React.FC = () => {
         
         <div className="prose prose-invert border-l-2 border-accent2 pl-4">
           <p className="text-slate-300 leading-relaxed font-text text-lg">
-            The quick brown fox jumps over the lazy dog. Sphinx of black quartz, judge my vow. Pack my box with five dozen liquor jugs. How vexingly quick daft zebras jump!
+            Video is a reflection of the author's soul. If the viewer doesn't feel you when watching your video, it means the editor didn't do a good job of creating quality. I'm here to correct this misunderstanding.
           </p>
           <p className="text-slate-400 mt-4 leading-relaxed font-text">
-            I specialize in crafting visual narratives that engage and retain audiences. From high-retention vertical shorts to complex documentary-style essays, I bring a sharp eye for pacing and aesthetics to every project.
+            For me, video isn't just a shell that shows something. Three years of professional editing experience have taught me: every video is a piece of my soul, including yours as the editor. And I put my whole soul into each video, so the viewer will hold their breath.
           </p>
         </div>
 

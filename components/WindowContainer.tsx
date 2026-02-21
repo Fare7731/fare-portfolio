@@ -14,10 +14,20 @@ const WindowContainer: React.FC<WindowContainerProps> = ({ children, title, onCl
   const [isDragging, setIsDragging] = useState(false);
   const [height, setHeight] = useState<string | number>(initialHeight);
   const [isResizing, setIsResizing] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Track initial mouse/touch positions and window offset
   const dragStart = useRef({ mouseX: 0, mouseY: 0, windowX: 0, windowY: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Handle position resetting cleanly before the browser paints
   useLayoutEffect(() => {
@@ -36,6 +46,8 @@ const WindowContainer: React.FC<WindowContainerProps> = ({ children, title, onCl
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent | TouchEvent) => {
+      if (isMobile) return;
+
       if (isDragging) {
         const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
         const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
@@ -73,9 +85,11 @@ const WindowContainer: React.FC<WindowContainerProps> = ({ children, title, onCl
       window.removeEventListener('touchmove', handleMouseMove);
       window.removeEventListener('touchend', handleMouseUp);
     };
-  }, [isDragging, isResizing]);
+  }, [isDragging, isResizing, isMobile]);
 
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+    if (isMobile) return;
+
     // Prevent dragging if interacting with the window control buttons
     if ((e.target as HTMLElement).tagName.toLowerCase() === 'button' || (e.target as HTMLElement).closest('button')) {
       return;
@@ -95,6 +109,7 @@ const WindowContainer: React.FC<WindowContainerProps> = ({ children, title, onCl
   };
 
   const handleResizeStart = (e: React.MouseEvent | React.TouchEvent) => {
+    if (isMobile) return;
     e.stopPropagation();
     setIsResizing(true);
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
@@ -109,20 +124,31 @@ const WindowContainer: React.FC<WindowContainerProps> = ({ children, title, onCl
   return (
     <div 
       ref={containerRef}
-      className={`w-full max-w-7xl mx-auto ${isClosing ? 'animate-slide-down' : 'animate-slide-up'}`}
-      style={{ height: typeof height === 'number' ? `${height}px` : height }}
+      className={`
+        ${isMobile ? 'fixed inset-x-0 bottom-0 top-8 z-50' : 'w-full max-w-7xl mx-auto relative'}
+        ${isClosing ? 'animate-slide-down' : 'animate-slide-up'}
+        pointer-events-auto
+      `}
+      style={!isMobile ? { height: typeof height === 'number' ? `${height}px` : height } : undefined}
     >
       <div 
-        className={`w-full h-full flex flex-col bg-windowBg backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] overflow-hidden ring-1 ring-white/5 will-change-transform ${isDragging ? 'shadow-[0_30px_80px_-10px_rgba(0,0,0,0.8)]' : ''} ${(isDragging || isResizing) ? 'select-none' : ''}`}
-        style={{ 
+        className={`
+          w-full h-full bg-windowBg/90 backdrop-blur-xl flex flex-col overflow-hidden relative
+          ${isMobile ? 'rounded-none border-t border-white/10' : 'rounded-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]'}
+          ${isDragging ? 'shadow-[0_30px_80px_-10px_rgba(0,0,0,0.8)]' : ''} 
+          ${(isDragging || isResizing) ? 'select-none' : ''}
+        `}
+        style={!isMobile ? { 
           transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
-          // Removed 'transform' from transition to prevent gliding when resetting position
           transition: (isDragging || isResizing) ? 'none' : 'box-shadow 0.2s ease-in-out'
-        }}
+        } : undefined}
       >
         {/* Window Title Bar - Drag Handle */}
         <div 
-          className="h-10 bg-white/5 border-b border-white/10 flex items-center justify-between px-4 shrink-0 cursor-grab active:cursor-grabbing select-none"
+          className={`
+            h-10 bg-white/5 border-b border-white/10 flex items-center justify-between px-4 shrink-0 select-none
+            ${!isMobile ? 'cursor-grab active:cursor-grabbing' : ''}
+          `}
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >
