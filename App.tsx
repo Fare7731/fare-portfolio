@@ -37,15 +37,15 @@ const staticVideoData: VideoData = {
     },
     {
       id: "v-2",
-      title: "Beauty is in simplicity",
-      text: "A simple but effective video to attract customers",
+      title: "AI Duo",
+      text: "A clear illustration of why neural networks with humans at the helm are powerful",
       url: "https://youtu.be/ZSzZw7AmOzE?si=54_5GsxoAf0cyxRF"
     },
     {
       id: "v-3",
-      title: "Podcasts are almighty",
-      text: "Medical concerns in simple terms.",
-      url: "https://youtube.com/shorts/Vtl5zdUicEI"
+      title: "Beauty is in simplicity",
+      text: "A simple but effective video to attract customers.",
+      url: "https://youtu.be/Vtl5zdUicEI?si=GUk8WE8dsgzI5-5i"
     }
   ],
   motionGraphics: [
