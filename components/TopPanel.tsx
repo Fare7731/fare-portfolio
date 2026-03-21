@@ -145,8 +145,8 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
 
   // Wi-Fi mock data
   const wifiNetworks = [
-    { name: 'OnePlus Nord 5', strength: 5, connected: true },
-    { name: 'Xiaomi Pad 7', strength: 4, connected: false },
+    { name: 'OnePlus Nord 5', strength: 5, connected: false },
+    { name: 'Mac OS is Good', strength: 4, connected: true },
     { name: 'iPhone (Fare)', strength: 2, connected: false },
     { name: 'Arch my beloved', strength: 1, connected: false },
     { name: 'Windows Haram', strength: 1, connected: false },
