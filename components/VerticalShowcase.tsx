@@ -7,9 +7,10 @@ const images = import.meta.glob('./pic/*.png', { eager: true, query: '?url', imp
 
 interface VerticalShowcaseProps {
   videos: VideoItem[];
+  isMobileView?: boolean;
 }
 
-const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
+const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos, isMobileView }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -40,7 +41,7 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
   };
 
   // Chunk videos into pages
-  const chunkSize = 3;
+  const chunkSize = isMobileView ? 1 : 3;
   const pages: VideoItem[][] = [];
   for (let i = 0; i < videos.length; i += chunkSize) {
     pages.push(videos.slice(i, i + chunkSize));
@@ -62,7 +63,7 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
 
   // Handle mouse wheel scrolling for seamless navigation
   const handleWheel = (e: React.WheelEvent) => {
-    if (isScrolling) return;
+    if (isScrolling || isMobileView) return;
 
     if (e.deltaY > 50 && currentPage < pages.length - 1) {
       setIsScrolling(true);
@@ -91,16 +92,31 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
     const deltaY = touchStartY.current - touchEndY;
     const deltaX = touchStartX.current - touchEndX;
 
-    // Vertical swipe for desktop
-    if (Math.abs(deltaY) > 50) {
-      if (deltaY > 0 && currentPage < pages.length - 1) {
-        setIsScrolling(true);
-        nextPage();
-        timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
-      } else if (deltaY < -50 && currentPage > 0) {
-        setIsScrolling(true);
-        prevPage();
-        timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+    if (isMobileView) {
+      // Horizontal swipe for mobile
+      if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0 && currentPage < pages.length - 1) {
+          setIsScrolling(true);
+          nextPage();
+          timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+        } else if (deltaX < 0 && currentPage > 0) {
+          setIsScrolling(true);
+          prevPage();
+          timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+        }
+      }
+    } else {
+      // Vertical swipe for desktop
+      if (Math.abs(deltaY) > 50) {
+        if (deltaY > 0 && currentPage < pages.length - 1) {
+          setIsScrolling(true);
+          nextPage();
+          timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+        } else if (deltaY < -50 && currentPage > 0) {
+          setIsScrolling(true);
+          prevPage();
+          timeoutRef.current = setTimeout(() => setIsScrolling(false), 800);
+        }
       }
     }
   };
@@ -155,9 +171,13 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
                 if (isActive) {
                   transitionClass = 'opacity-100 translate-y-0 translate-x-0 scale-100 pointer-events-auto';
                 } else if (isPast) {
-                  transitionClass = 'opacity-0 -translate-y-24 scale-95 pointer-events-none';
+                  transitionClass = isMobileView 
+                    ? 'opacity-0 -translate-x-24 scale-95 pointer-events-none'
+                    : 'opacity-0 -translate-y-24 scale-95 pointer-events-none';
                 } else {
-                  transitionClass = 'opacity-0 translate-y-24 scale-95 pointer-events-none';
+                  transitionClass = isMobileView
+                    ? 'opacity-0 translate-x-24 scale-95 pointer-events-none'
+                    : 'opacity-0 translate-y-24 scale-95 pointer-events-none';
                 }
 
                 return (
@@ -194,9 +214,9 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
                       )}
                     </div>
                     
-                    <div className="absolute top-full left-0 w-full mt-4 px-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                    <div className={`absolute top-full left-0 w-full mt-4 px-2 opacity-80 group-hover:opacity-100 transition-opacity ${isMobileView ? 'text-center' : ''}`}>
                       <h4 className="font-heading text-white text-sm md:text-base truncate mb-1">{video.title}</h4>
-                      <p className="font-text text-[10px] md:text-xs text-slate-400 line-clamp-2">{video.text}</p>
+                      <p className={`font-text text-slate-400 line-clamp-2 ${isMobileView ? 'text-[9px]' : 'text-[10px] md:text-xs'}`}>{video.text}</p>
                     </div>
                   </div>
                 );
@@ -209,18 +229,20 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
       {/* Navigation Controls Overlay */}
       {pages.length > 1 && (
         <div 
-          className="absolute z-30 bg-windowBg/60 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] flex gap-3 right-4 md:right-8 top-1/2 -translate-y-1/2 flex-col items-center"
+          className={`absolute z-30 bg-windowBg/60 backdrop-blur-md p-2 rounded-full border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] flex gap-3 ${
+            isMobileView ? 'bottom-2 left-1/2 -translate-x-1/2 flex-row' : 'right-4 md:right-8 top-1/2 -translate-y-1/2 flex-col items-center'
+          }`}
         >
           <button
             onClick={prevPage}
             disabled={currentPage === 0}
-            className="p-1.5 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors focus:outline-none"
+            className={`p-1.5 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors focus:outline-none ${isMobileView ? '-rotate-90' : ''}`}
             title="Previous Page"
           >
             <ChevronUpIcon className="w-5 h-5" />
           </button>
 
-          <div className="flex gap-3 py-2 flex-col">
+          <div className={`flex gap-3 py-2 ${isMobileView ? 'flex-row' : 'flex-col'}`}>
             {pages.map((_, i) => (
               <button
                 key={i}
@@ -238,7 +260,7 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos }) => {
           <button
             onClick={nextPage}
             disabled={currentPage === pages.length - 1}
-            className="p-1.5 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors focus:outline-none"
+            className={`p-1.5 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors focus:outline-none ${isMobileView ? '-rotate-90' : ''}`}
             title="Next Page"
           >
             <ChevronDownIcon className="w-5 h-5" />

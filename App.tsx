@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TopPanel from './components/TopPanel';
 import Navigation from './components/Navigation';
 import WindowContainer from './components/WindowContainer';
-import MobileFallback from './components/MobileFallback';
+import MobileView from './components/MobileView';
 import AboutSection from './components/sections/AboutSection';
 import VideoShowcase from './components/sections/VideoShowcase';
 import VerticalShowcase from './components/sections/VerticalShowcase';
@@ -182,43 +182,47 @@ const App: React.FC = () => {
   // Standard Desktop App Render
   return (
     <div className="relative w-full h-screen overflow-hidden flex flex-col font-text text-slate-200">
-      {isMobile && <MobileFallback />}
-      
-      {/* Hemisphere and Backlight Background */}
-      <div className="absolute inset-0 bg-bgMain -z-20 overflow-hidden">
-        {/* Huge Backlight / Aura */}
-        <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-[120vw] md:w-[80vw] h-[60vh] bg-accent1 blur-[120px] opacity-40 rounded-full mix-blend-screen -z-10 pointer-events-none"></div>
-        
-        {/* Hemisphere / Dark Planet */}
-        <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-[80%] w-[200vw] md:w-[150vw] lg:w-[120vw] aspect-square rounded-full bg-[#02050A] border-t-[1.5px] border-accent1/50 shadow-[inset_0_4px_30px_rgba(0,168,255,0.2)] -z-10 pointer-events-none"></div>
-      </div>
+      {isMobile ? (
+        <MobileView videoData={staticVideoData} />
+      ) : (
+        <>
+          {/* Hemisphere and Backlight Background */}
+          <div className="absolute inset-0 bg-bgMain -z-20 overflow-hidden">
+            {/* Huge Backlight / Aura */}
+            <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-[120vw] md:w-[80vw] h-[60vh] bg-accent1 blur-[120px] opacity-40 rounded-full mix-blend-screen -z-10 pointer-events-none"></div>
+            
+            {/* Hemisphere / Dark Planet */}
+            <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-[80%] w-[200vw] md:w-[150vw] lg:w-[120vw] aspect-square rounded-full bg-[#02050A] border-t-[1.5px] border-accent1/50 shadow-[inset_0_4px_30px_rgba(0,168,255,0.2)] -z-10 pointer-events-none"></div>
+          </div>
 
-      <TopPanel 
-        activeWorkspace={currentWorkspace} 
-        onWorkspaceChange={setCurrentWorkspace} 
-        onOpenTerminal={handleOpenTerminal} 
-      />
-      
-      <div className="flex-1 w-full max-w-[1600px] mx-auto flex flex-col p-4 md:p-6 lg:p-8 relative z-10 h-[calc(100vh-2rem)]">
-        <Navigation 
-          activeSection={workspaceSections[currentWorkspace]} 
-          onSectionChange={handleSectionChange} 
-        />
-        
-        {/* Window Area with Workspace Layers */}
-        <div className="flex-1 w-full flex flex-col items-center justify-center min-h-0 relative pb-4 z-[45] pointer-events-none">
-          {[1, 2, 3].map(ws => (
-            <WorkspaceLayer
-              key={ws}
-              isActive={ws === currentWorkspace}
-              activeSection={workspaceSections[ws]}
-              onClose={() => setWorkspaceSections(prev => ({ ...prev, [ws]: null }))}
-              onSectionChange={handleSectionChange}
-              videoData={staticVideoData}
+          <TopPanel 
+            activeWorkspace={currentWorkspace} 
+            onWorkspaceChange={setCurrentWorkspace} 
+            onOpenTerminal={handleOpenTerminal} 
+          />
+          
+          <div className="flex-1 w-full max-w-[1600px] mx-auto flex flex-col p-4 md:p-6 lg:p-8 relative z-10 h-[calc(100vh-2rem)]">
+            <Navigation 
+              activeSection={workspaceSections[currentWorkspace]} 
+              onSectionChange={handleSectionChange} 
             />
-          ))}
-        </div>
-      </div>
+            
+            {/* Window Area with Workspace Layers */}
+            <div className="flex-1 w-full flex flex-col items-center justify-center min-h-0 relative pb-4 z-[45] pointer-events-none">
+              {[1, 2, 3].map(ws => (
+                <WorkspaceLayer
+                  key={ws}
+                  isActive={ws === currentWorkspace}
+                  activeSection={workspaceSections[ws]}
+                  onClose={() => setWorkspaceSections(prev => ({ ...prev, [ws]: null }))}
+                  onSectionChange={handleSectionChange}
+                  videoData={staticVideoData}
+                />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
