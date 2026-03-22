@@ -216,7 +216,7 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos, isMobileVie
                     
                     <div className={`absolute top-full left-0 w-full mt-4 px-2 opacity-80 group-hover:opacity-100 transition-opacity ${isMobileView ? 'text-center' : ''}`}>
                       <h4 className={`font-heading text-white truncate mb-1 ${isMobileView ? 'text-base' : 'text-sm md:text-base'}`}>{video.title}</h4>
-                      <p className={`font-text text-slate-400 line-clamp-2 ${isMobileView ? 'text-xs' : 'text-[10px] md:text-xs'}`}>{video.text}</p>
+                      <p className={`font-text text-slate-400 line-clamp-2 ${isMobileView ? 'text-[11px]' : 'text-[10px] md:text-xs'}`}>{video.text}</p>
                     </div>
                   </div>
                 );
