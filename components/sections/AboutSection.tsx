@@ -17,7 +17,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ onContactClick }) => {
       </div>
 
       {/* Left: Avatar */}
-      <div className="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden border-2 border-accent1/50 shadow-[0_0_30px_rgba(0,112,187,0.3)] shrink-0 relative group">
+      <div className="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden border-2 border-accent1/50 shadow-[0_0_30px_rgba(0,112,187,0.3)] shrink-0 relative group mt-8 md:mt-0">
         <img 
           src={avatarImg} 
           alt="Eugene Avatar" 
@@ -48,9 +48,9 @@ const AboutSection: React.FC<AboutSectionProps> = ({ onContactClick }) => {
           <div className="p-6 -m-6 overflow-visible">
             <button 
               onClick={onContactClick}
-              className="flex items-center gap-2 font-mono text-xs text-accent1 bg-accent1/20 px-3 py-1.5 rounded border border-accent1/40 hover:bg-accent1/30 transition-all cursor-pointer animate-blink animate-glow shadow-[0_0_15px_rgba(0,168,255,0.3)]"
+              className="flex items-center gap-2 font-mono text-xs text-accent1 bg-accent1/20 px-3 py-1.5 rounded border border-accent1/40 hover:bg-accent1/30 transition-all cursor-pointer animate-blink md:animate-glow md:shadow-[0_0_15px_rgba(0,168,255,0.3)]"
             >
-              <span className="w-2.5 h-2.5 rounded-full bg-accent1 animate-pulse shadow-[0_0_8px_rgba(0,168,255,0.8)]"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-accent1 animate-pulse md:shadow-[0_0_8px_rgba(0,168,255,0.8)]"></span>
               AVAILABLE FOR WORK
             </button>
           </div>

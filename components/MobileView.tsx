@@ -116,7 +116,7 @@ const MobileView: React.FC<MobileViewProps> = ({ videoData }) => {
               index < currentIndex ? '-translate-y-full opacity-0' : 'translate-y-full opacity-0'
             }`}
           >
-            <div className="w-full h-full flex flex-col pt-8 pb-6 overflow-visible">
+            <div className="w-full h-full flex flex-col pt-0 pb-6 overflow-visible">
                {renderContent(section)}
             </div>
           </div>
