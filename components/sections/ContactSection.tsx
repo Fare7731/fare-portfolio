@@ -1,4 +1,5 @@
 import React from 'react';
+import LocalizedText from '../LocalizedText';
 
 const telegramQr = new URL('./qr/telegram.svg', import.meta.url).href;
 const twitterQr = new URL('./qr/twitter.svg', import.meta.url).href;
@@ -51,9 +52,15 @@ const ContactSection: React.FC = () => {
       </div>
 
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-heading text-white mb-2">Ready to update your videos?</h2>
-        <p className="text-slate-400 font-mono text-sm hidden md:block">So what are you waiting for? Message me and we'll take your content to the next level.</p>
-        <p className="text-slate-400 font-mono text-sm md:hidden">So what are you waiting for? Message me and we'll take your content to the next level.</p>
+        <h2 className="text-4xl font-heading text-white mb-2">
+          <LocalizedText en="Ready to update your videos?" ru="Готовы вывести свой контент на новый уровень?" />
+        </h2>
+        <p className="text-slate-400 font-mono text-sm hidden md:block">
+          <LocalizedText en="Then go ahead. Write and I'll make your content much better." ru="Тогда вперёд. Пишите и я сделаю ваш контент лучше в разы" />
+        </p>
+        <p className="text-slate-400 font-mono text-sm md:hidden">
+          <LocalizedText en="Then go ahead. Write and I'll make your content much better." ru="Тогда вперёд. Пишите и я сделаю ваш контент лучше в разы" />
+        </p>
       </div>
 
       <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-24 mb-16">
@@ -63,14 +70,14 @@ const ContactSection: React.FC = () => {
       </div>
 
       <a 
-        href="https://t.me/fare_tgc" 
+        href="#" 
         target="_blank" 
         rel="noopener noreferrer"
         className="relative inline-block group px-8 py-4 bg-gradient-to-r from-accent1 to-accent2 rounded-lg font-heading text-white shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 active:scale-95"
       >
         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
         <span className="relative z-10 flex items-center gap-2">
-          Join My Community
+          <LocalizedText en="Join My Community" ru="Заходи в мой канал" />
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
         </span>
       </a>

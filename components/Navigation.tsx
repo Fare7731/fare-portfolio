@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SectionType } from '../types';
+import LocalizedText from './LocalizedText';
 
 interface NavigationProps {
   activeSection: SectionType | null;
@@ -13,6 +14,14 @@ const SECTIONS: SectionType[] = [
   'Motion Graphics',
   'Contact Me'
 ];
+
+const SECTION_NAMES_RU: Record<string, string> = {
+  'About Me': 'Обо мне',
+  'Full-Length Videos': 'Горизонтальные видео',
+  'Vertical Videos': 'Вертикальные видео',
+  'Motion Graphics': 'Motion-дизайн',
+  'Contact Me': 'Контакты'
+};
 
 const Navigation: React.FC<NavigationProps> = ({ activeSection, onSectionChange }) => {
   const [showOutline, setShowOutline] = useState(true);
@@ -58,7 +67,9 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection, onSectionChange 
                   ${isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'}
                 `}
               >
-                <span className="relative z-10">{section}</span>
+                <span className="relative z-10">
+                  <LocalizedText en={section} ru={SECTION_NAMES_RU[section]} />
+                </span>
                 {isActive && (
                   <div className="absolute inset-0 bg-accent1 rounded-full -z-0 shadow-[0_0_15px_rgba(0,168,255,0.5)] animate-fade-in" />
                 )}

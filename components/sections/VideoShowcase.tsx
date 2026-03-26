@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { VideoItem, Difficulty } from '../../types';
 import { getEmbedUrl } from '../../utils/youtube';
 import { ChevronUpIcon, ChevronDownIcon, PlayIcon } from '../Icons';
+import LocalizedText from '../LocalizedText';
+import { useLanguage } from '../../LanguageContext';
 
 import fl1 from './pic/fl-1.png';
 import fl2 from './pic/fl-2.png';
@@ -23,15 +25,23 @@ interface VideoShowcaseProps {
 const DifficultyBadge = ({ level }: { level?: Difficulty }) => {
   if (!level) return null;
   
+  const { t } = useLanguage();
+  
   const colors = {
     easy: 'bg-green-500/20 text-green-400 border-green-500/30 md:shadow-[0_0_10px_rgba(34,197,94,0.2)]',
     medium: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30 md:shadow-[0_0_10px_rgba(234,179,8,0.2)]',
     hard: 'bg-red-500/20 text-red-400 border-red-500/30 md:shadow-[0_0_10px_rgba(239,68,68,0.2)]',
   };
 
+  const labels = {
+    easy: t('easy', 'легко'),
+    medium: t('medium', 'средне'),
+    hard: t('hard', 'сложно'),
+  };
+
   return (
     <span className={`px-2.5 py-1 text-[10px] uppercase tracking-widest font-mono rounded border ${colors[level]}`}>
-      {level}
+      {labels[level]}
     </span>
   );
 };
@@ -218,7 +228,9 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos, isMobileView }) =
             {/* Right: Info */}
             <div className={`w-full lg:w-2/5 flex flex-col items-start pb-20 lg:pb-0 ${isMobileView ? 'items-center text-center' : ''}`}>
               <div className={`flex items-center gap-3 mb-3 ${isMobileView ? '' : ''}`}>
-                <h3 className="text-2xl lg:text-3xl font-heading text-white">{video.title}</h3>
+                <h3 className="text-2xl lg:text-3xl font-heading text-white">
+                  <LocalizedText en={video.title} ru={video.titleRu} />
+                </h3>
                 {!isMobileView && video.difficulty && <DifficultyBadge level={video.difficulty} />}
               </div>
               
@@ -226,7 +238,7 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos, isMobileView }) =
                 <div className={`w-full mb-4 border-b border-accent1/30 pb-2 flex flex-col ${isMobileView ? 'items-center' : ''}`}>
                   {video.subtitle && (
                     <h4 className={`text-lg font-subheading text-accent1 ${isMobileView ? 'text-center' : ''}`}>
-                      {video.subtitle}
+                      <LocalizedText en={video.subtitle} ru={video.subtitleRu} />
                     </h4>
                   )}
                   {isMobileView && video.difficulty && (
@@ -237,9 +249,9 @@ const VideoShowcase: React.FC<VideoShowcaseProps> = ({ videos, isMobileView }) =
                 </div>
               )}
               
-              <p className={`text-slate-300 font-text leading-relaxed ${isMobileView ? 'text-s text-justify' : ''}`}>
-                {video.text}
-              </p>
+              <div className={`text-slate-300 font-text leading-relaxed ${isMobileView ? 'text-s text-justify' : ''}`}>
+                <LocalizedText en={video.text} ru={video.textRu} inline={false} />
+              </div>
             </div>
           </div>
         );

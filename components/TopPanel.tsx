@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../LanguageContext';
+import LocalizedText from './LocalizedText';
 import { 
   TerminalIcon, 
   CpuIcon, 
@@ -21,6 +23,7 @@ interface TopPanelProps {
 type WidgetType = 'calendar' | 'system' | 'wifi' | 'battery' | null;
 
 const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange, onOpenTerminal }) => {
+  const { language, setLanguage } = useLanguage();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [calendarDate, setCalendarDate] = useState(new Date());
   
@@ -98,19 +101,19 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
   };
 
   // Clock variables
-  const topBarTime = currentTime.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  const topBarDate = currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  const topBarTime = currentTime.toLocaleTimeString(language === 'ru' ? 'ru-RU' : 'en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const topBarDate = currentTime.toLocaleDateString(language === 'ru' ? 'ru-RU' : 'en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   
   const hours = currentTime.getHours() % 12 || 12;
   const paddedHours = hours.toString().padStart(2, '0');
   const paddedMinutes = currentTime.getMinutes().toString().padStart(2, '0');
   const ampm = currentTime.getHours() >= 12 ? 'PM' : 'AM';
-  const weekday = currentTime.toLocaleDateString('en-US', { weekday: 'long' });
+  const weekday = currentTime.toLocaleDateString(language === 'ru' ? 'ru-RU' : 'en-US', { weekday: 'long' });
 
   // Calendar logic
   const calYear = calendarDate.getFullYear();
   const calMonth = calendarDate.getMonth();
-  const monthName = calendarDate.toLocaleDateString('en-US', { month: 'long' });
+  const monthName = calendarDate.toLocaleDateString(language === 'ru' ? 'ru-RU' : 'en-US', { month: 'long' });
   
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
   const firstDayOfWeek = new Date(calYear, calMonth, 1).getDay();
@@ -145,8 +148,8 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
 
   // Wi-Fi mock data
   const wifiNetworks = [
-    { name: 'OnePlus Nord 5', strength: 5, connected: false },
-    { name: 'Mac Mini M5 Pro', strength: 5, connected: true },
+    { name: 'OnePlus Nord 5', strength: 5, connected: true },
+    { name: 'Xiaomi Pad 7', strength: 4, connected: false },
     { name: 'iPhone (Fare)', strength: 2, connected: false },
     { name: 'Arch my beloved', strength: 1, connected: false },
     { name: 'Windows Haram', strength: 1, connected: false },
@@ -170,6 +173,23 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
               {ws}
             </span>
           ))}
+        </div>
+        <div className="h-3 w-px bg-white/20 mx-2"></div>
+        {/* Language Switcher */}
+        <div className="flex items-center space-x-2 mr-2">
+          <span 
+            onClick={() => setLanguage('en')}
+            className={`cursor-pointer transition-colors ${language === 'en' ? 'text-accent1 font-bold' : 'text-slate-500 hover:text-slate-300'}`}
+          >
+            EN
+          </span>
+          <span className="text-slate-700">/</span>
+          <span 
+            onClick={() => setLanguage('ru')}
+            className={`cursor-pointer transition-colors ${language === 'ru' ? 'text-accent1 font-bold' : 'text-slate-500 hover:text-slate-300'}`}
+          >
+            RU
+          </span>
         </div>
         <div className="h-3 w-px bg-white/20 mx-2"></div>
         {/* EASTER EGG TRIGGER */}
@@ -234,7 +254,7 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
                 {/* Calendar Grid */}
                 <div className="grid grid-cols-7 gap-y-3 gap-x-1 text-center text-xs font-mono">
                   {/* Days of Week */}
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+                  {(language === 'ru' ? ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']).map(d => (
                     <div key={d} className="text-slate-400 mb-1">{d}</div>
                   ))}
                   
@@ -348,7 +368,9 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
                 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4 px-1">
-                  <span className="text-white font-heading font-bold text-[17px]">Wi-Fi</span>
+                  <span className="text-white font-heading font-bold text-[17px]">
+                    <LocalizedText en="Wi-Fi" ru="Wi-Fi" />
+                  </span>
                   {/* Toggle */}
                   <div 
                     className={`w-11 h-6 rounded-full flex items-center p-0.5 cursor-pointer transition-colors duration-300 ${isWifiOn ? 'bg-slate-200' : 'bg-white/20'}`}
@@ -362,8 +384,12 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
 
                 {/* Subheader */}
                 <div className={`flex items-center justify-between mb-3 px-1 transition-opacity duration-300 ${isWifiOn ? 'opacity-100' : 'opacity-30'}`}>
-                  <span className="text-white font-heading text-sm font-semibold tracking-wide">Wi-Fi Networks</span>
-                  <span className={`font-text text-sm transition-colors ${isWifiOn ? 'text-slate-400 hover:text-white cursor-pointer' : 'text-slate-500 cursor-default pointer-events-none'}`}>Refresh</span>
+                  <span className="text-white font-heading text-sm font-semibold tracking-wide">
+                    <LocalizedText en="Wi-Fi Networks" ru="Сети Wi-Fi" />
+                  </span>
+                  <span className={`font-text text-sm transition-colors ${isWifiOn ? 'text-slate-400 hover:text-white cursor-pointer' : 'text-slate-500 cursor-default pointer-events-none'}`}>
+                    <LocalizedText en="Refresh" ru="Обновить" />
+                  </span>
                 </div>
 
                 {/* Network List */}
@@ -395,7 +421,9 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
                     </div>
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center animate-fade-in">
-                      <span className="text-slate-400 font-text text-[15px]">Wi-Fi is turned off</span>
+                      <span className="text-slate-400 font-text text-[15px]">
+                        <LocalizedText en="Wi-Fi is turned off" ru="Wi-Fi выключен" />
+                      </span>
                     </div>
                   )}
                 </div>
@@ -420,8 +448,12 @@ const TopPanel: React.FC<TopPanelProps> = ({ activeWorkspace, onWorkspaceChange,
               <div className={`bg-[#2D323E]/95 backdrop-blur-xl border border-white/5 rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.5)] px-6 py-5 flex items-center gap-6 cursor-default origin-top-right ${isWidgetClosing ? 'animate-widget-out' : 'animate-widget-in'}`}>
                 <LargeBatteryIcon className="w-14 h-14 text-[#B890B3] shrink-0" />
                 <div className="flex flex-col whitespace-nowrap text-left">
-                  <span className="text-[28px] font-mono font-bold text-slate-100 leading-none">9 hours</span>
-                  <span className="text-[20px] font-mono text-slate-200 leading-none mt-2">55 minutes</span>
+                  <span className="text-[28px] font-mono font-bold text-slate-100 leading-none">
+                    <LocalizedText en="9 hours" ru="9 часов" />
+                  </span>
+                  <span className="text-[20px] font-mono text-slate-200 leading-none mt-2">
+                    <LocalizedText en="55 minutes" ru="55 минут" />
+                  </span>
                 </div>
               </div>
             </div>

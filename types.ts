@@ -1,11 +1,15 @@
 export type Difficulty = 'easy' | 'medium' | 'hard';
+export type Language = 'en' | 'ru';
 
 export interface VideoItem {
   id: string;
   title: string;
+  titleRu?: string;
   subtitle?: string;
+  subtitleRu?: string;
   difficulty?: Difficulty;
   text: string;
+  textRu?: string;
   url: string;
 }
 

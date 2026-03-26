@@ -4,6 +4,8 @@ import AboutSection from './sections/AboutSection';
 import VideoShowcase from './sections/VideoShowcase';
 import VerticalShowcase from './sections/VerticalShowcase';
 import ContactSection from './sections/ContactSection';
+import LocalizedText from './LocalizedText';
+import { useLanguage } from '../LanguageContext';
 
 interface MobileViewProps {
   videoData: VideoData;
@@ -17,7 +19,16 @@ const sections: SectionType[] = [
   'Contact Me'
 ];
 
+const SECTION_NAMES_RU: Record<string, string> = {
+  'About Me': 'Обо мне',
+  'Full-Length Videos': 'Длинные видео',
+  'Vertical Videos': 'Вертикальные видео',
+  'Motion Graphics': 'Моушн-графика',
+  'Contact Me': 'Связаться со мной'
+};
+
 const MobileView: React.FC<MobileViewProps> = ({ videoData }) => {
+  const { language, setLanguage } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
@@ -107,6 +118,23 @@ const MobileView: React.FC<MobileViewProps> = ({ videoData }) => {
         <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-[150vw] h-[50vh] bg-accent1 blur-[100px] opacity-20 rounded-full pointer-events-none"></div>
       </div>
 
+      {/* Language Switcher */}
+      <div className="absolute top-4 right-4 z-[110] flex items-center space-x-2 bg-windowBg/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+        <span 
+          onClick={() => setLanguage('en')}
+          className={`text-[10px] font-mono cursor-pointer transition-colors ${language === 'en' ? 'text-accent1 font-bold' : 'text-slate-500'}`}
+        >
+          EN
+        </span>
+        <span className="text-slate-700 text-[10px]">/</span>
+        <span 
+          onClick={() => setLanguage('ru')}
+          className={`text-[10px] font-mono cursor-pointer transition-colors ${language === 'ru' ? 'text-accent1 font-bold' : 'text-slate-500'}`}
+        >
+          RU
+        </span>
+      </div>
+
       <div className="flex-1 relative">
         {sections.map((section, index) => (
           <div 
@@ -125,6 +153,9 @@ const MobileView: React.FC<MobileViewProps> = ({ videoData }) => {
 
       {/* Mobile Navigation Indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none">
+        <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">
+          <LocalizedText en={sections[currentIndex]} ru={SECTION_NAMES_RU[sections[currentIndex]]} />
+        </div>
         <div className="flex gap-2">
           {sections.map((_, i) => (
             <div 

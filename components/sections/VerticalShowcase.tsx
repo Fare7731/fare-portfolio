@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { VideoItem } from '../../types';
 import { getEmbedUrl } from '../../utils/youtube';
 import { ChevronUpIcon, ChevronDownIcon, PlayIcon } from '../Icons';
+import LocalizedText from '../LocalizedText';
+import { useLanguage } from '../../LanguageContext';
 
 const images = import.meta.glob('./pic/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
 
@@ -138,7 +140,7 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos, isMobileVie
       <div className="absolute top-0 left-0 w-full p-6 z-20 pointer-events-none hidden md:flex justify-between items-center">
         <h3 className="text-2xl font-heading text-white flex items-center gap-3">
           <span className="w-1.5 h-6 bg-accent2 rounded-full inline-block shadow-[0_0_10px_rgba(54,0,120,0.8)]"></span>
-          Short-form Content
+          <LocalizedText en="Short-form Content" ru="Короткометражный контент" />
         </h3>
         <span className="font-mono text-[10px] text-slate-500/70 tracking-widest uppercase hidden sm:block text-right">
           © Fare 2026. All rights reserved.
@@ -215,8 +217,12 @@ const VerticalShowcase: React.FC<VerticalShowcaseProps> = ({ videos, isMobileVie
                     </div>
                     
                     <div className={`absolute top-full left-0 w-full mt-4 px-2 opacity-80 group-hover:opacity-100 transition-opacity ${isMobileView ? 'text-center' : ''}`}>
-                      <h4 className={`font-heading text-white truncate mb-1 ${isMobileView ? 'text-base' : 'text-sm md:text-base'}`}>{video.title}</h4>
-                      <p className={`font-text text-slate-400 line-clamp-2 ${isMobileView ? 'text-[11px]' : 'text-[10px] md:text-xs'}`}>{video.text}</p>
+                      <h4 className={`font-heading text-white truncate mb-1 ${isMobileView ? 'text-base' : 'text-sm md:text-base'}`}>
+                        <LocalizedText en={video.title} ru={video.titleRu} />
+                      </h4>
+                      <p className={`font-text text-slate-400 line-clamp-2 ${isMobileView ? 'text-[11px]' : 'text-[10px] md:text-xs'}`}>
+                        <LocalizedText en={video.text} ru={video.textRu} />
+                      </p>
                     </div>
                   </div>
                 );

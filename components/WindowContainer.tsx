@@ -2,7 +2,7 @@ import React, { ReactNode, useState, useEffect, useLayoutEffect, useRef } from '
 
 interface WindowContainerProps {
   children: ReactNode;
-  title: string;
+  title: ReactNode;
   onClose: () => void;
   isClosing?: boolean;
   resizable?: boolean;
