@@ -153,9 +153,6 @@ const MobileView: React.FC<MobileViewProps> = ({ videoData }) => {
 
       {/* Mobile Navigation Indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none">
-        <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-1">
-          <LocalizedText en={sections[currentIndex]} ru={SECTION_NAMES_RU[sections[currentIndex]]} />
-        </div>
         <div className="flex gap-2">
           {sections.map((_, i) => (
             <div 
