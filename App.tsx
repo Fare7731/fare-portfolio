@@ -21,7 +21,7 @@ const SECTION_NAMES_RU: Record<string, string> = {
   'Terminal': 'Консоль'
 };
 
-const portfolio = portfolioData as VideoData;
+const staticVideoData = portfolioData as VideoData;
 
 // Encapsulated workspace layer that handles its own open/close window animations
 interface WorkspaceLayerProps {
@@ -141,7 +141,7 @@ const App: React.FC = () => {
   return (
     <div className="relative w-full h-screen overflow-hidden flex flex-col font-text text-slate-200">
       {isMobile ? (
-        <MobileView videoData={portfolio} />
+        <MobileView videoData={staticVideoData} />
       ) : (
         <>
           {/* Hemisphere and Backlight Background */}
@@ -174,7 +174,7 @@ const App: React.FC = () => {
                   activeSection={workspaceSections[ws]}
                   onClose={() => setWorkspaceSections(prev => ({ ...prev, [ws]: null }))}
                   onSectionChange={handleSectionChange}
-                  videoData={portfolio}
+                  videoData={staticVideoData}
                 />
               ))}
             </div>

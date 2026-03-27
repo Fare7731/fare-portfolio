@@ -84,6 +84,18 @@
       "textRu": "Я давно являюсь фанатом системных интерфейсов. Так что для меня анимация какого-то системного компонента была лишь вопросом времени.",
       "url": "https://youtu.be/3cccfWBxXHg",
       "thumbnail": "/pic/mg-2.png"
+    },
+    {
+      "id": "mg-3",
+      "title": "test",
+      "titleRu": "тест",
+      "subtitle": "test1",
+      "subtitleRu": "тест1",
+      "difficulty": "hard",
+      "text": "test desc",
+      "textRu": "тестовой описание",
+      "url": "https://youtu.be/7aLrBjBT4fg?si=___7QwFndaYopF2-",
+      "thumbnail": "/pic/fl-2.png"
     }
   ]
 }

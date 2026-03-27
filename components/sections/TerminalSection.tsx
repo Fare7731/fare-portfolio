@@ -65,15 +65,15 @@ const TerminalSection: React.FC = () => {
           <div><span className="text-accent1 font-bold">Uptime:</span> 13 hours, 45 mins</div>
           <div><span className="text-accent1 font-bold">Packages:</span> 172 (pacman)</div>
           <div><span className="text-accent1 font-bold">Shell:</span> bash 5.2.37</div>
-          <div><span className="text-accent1 font-bold">DE:</span> Hyprland (Wayland)</div>
-          <div><span className="text-accent1 font-bold">Terminal:</span> alacritty 0.16.1-1</div>
+          <div><span className="text-accent1 font-bold">WM:</span> Hyprland (Wayland)</div>
+          <div><span className="text-accent1 font-bold">Terminal:</span> konsole 25.12.2-1</div>
           <div><span className="text-accent1 font-bold">CPU:</span> AMD Ryzen 5 7600X (12) @ 4.70 GHz</div>
           <div><span className="text-accent1 font-bold">GPU:</span> NVIDIA GeForce RTX 4070 Ti SUPER (15.68 GiB) [Discrete]</div>
           <div><span className="text-accent1 font-bold">Memory:</span> 15.86 GiB / 63.60 GiB (25%)</div>
           <div><span className="text-accent1 font-bold">Swap:</span> 105.20 MiB / 4.00 GiB (3%)</div>
           <div><span className="text-accent1 font-bold">Disk (/):</span> 1.49 GiB / 1006.85 GiB (0%) - ext4</div>
-          <div><span className="text-accent1 font-bold">Disk (/dev/sda1):</span> 597.78 GiB / 1.82 TiB (32%) - ext4</div>
-          <div><span className="text-accent1 font-bold">Disk (/dev/nvme1n1):</span> 30.24 GiB / 953.81 GiB (3%) - ext4</div>
+          <div><span className="text-accent1 font-bold">Disk (/dev/sda1):</span> 597.78 GiB / 1.82 TiB (32%) - 9p</div>
+          <div><span className="text-accent1 font-bold">Disk (/dev/nvme1n1):</span> 30.24 GiB / 953.81 GiB (3%) - 9p</div>
           <div><span className="text-accent1 font-bold">Local IP (Ethernet):</span> 192.168.1.2/24</div>
           <div><span className="text-accent1 font-bold">Locale:</span> en_US.UTF-8</div>
         </div>

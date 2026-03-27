@@ -2,8 +2,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { LanguageProvider } from './LanguageContext';
-import { Keystatic } from '@keystatic/core/ui';
-import keystaticConfig from './keystatic.config';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -11,21 +9,10 @@ if (!rootElement) {
 }
 
 const root = createRoot(rootElement);
-
-const Main = () => {
-  if (window.location.pathname.startsWith('/keystatic')) {
-    return <Keystatic config={keystaticConfig as any} />;
-  }
-
-  return (
+root.render(
+  <React.StrictMode>
     <LanguageProvider>
       <App />
     </LanguageProvider>
-  );
-};
-
-root.render(
-  <React.StrictMode>
-    <Main />
   </React.StrictMode>
 );

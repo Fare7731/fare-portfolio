@@ -1,0 +1,36 @@
+name: Deploy Staging Site
+
+on:
+  push:
+    branches: ["cms-testing"]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck and Build
+        run: npm run build
+        env:
+          VITE_KEYSTATIC_GITHUB_CLIENT_ID: ${{ secrets.VITE_KEYSTATIC_GITHUB_CLIENT_ID }}
+          VITE_KEYSTATIC_GITHUB_CLIENT_SECRET: ${{ secrets.VITE_KEYSTATIC_GITHUB_CLIENT_SECRET }}
+
+      - name: Deploy to gh-pages-test
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages-test

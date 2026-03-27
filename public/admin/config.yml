@@ -1,0 +1,62 @@
+backend:
+  name: github
+  repo: FareEditor/FareOS
+  branch: main
+
+local_backend: true
+
+media_folder: "public/pic"
+public_folder: "/pic"
+editor:
+  preview: false
+
+collections:
+  - name: "portfolio"
+    label: "Portfolio"
+    files:
+      - name: "video_data"
+        label: "Video Data"
+        file: "data/portfolio.json"
+        fields:
+          - label: "Full-Length Videos"
+            name: "fullLength"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Title (RU)", name: "titleRu", widget: "string", required: false }
+              - { label: "Subtitle", name: "subtitle", widget: "string", required: false }
+              - { label: "Subtitle (RU)", name: "subtitleRu", widget: "string", required: false }
+              - { label: "Difficulty", name: "difficulty", widget: "select", options: ["easy", "medium", "hard"], required: false }
+              - { label: "Text", name: "text", widget: "text" }
+              - { label: "Text (RU)", name: "textRu", widget: "text", required: false }
+              - { label: "YouTube URL", name: "url", widget: "string" }
+              - { label: "Thumbnail", name: "thumbnail", widget: "image", required: false }
+          - label: "Vertical Videos"
+            name: "vertical"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Title (RU)", name: "titleRu", widget: "string", required: false }
+              - { label: "Subtitle", name: "subtitle", widget: "string", required: false }
+              - { label: "Subtitle (RU)", name: "subtitleRu", widget: "string", required: false }
+              - { label: "Difficulty", name: "difficulty", widget: "select", options: ["easy", "medium", "hard"], required: false }
+              - { label: "Text", name: "text", widget: "text" }
+              - { label: "Text (RU)", name: "textRu", widget: "text", required: false }
+              - { label: "YouTube URL", name: "url", widget: "string" }
+              - { label: "Thumbnail", name: "thumbnail", widget: "image", required: false }
+          - label: "Motion Graphics"
+            name: "motionGraphics"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Title (RU)", name: "titleRu", widget: "string", required: false }
+              - { label: "Subtitle", name: "subtitle", widget: "string", required: false }
+              - { label: "Subtitle (RU)", name: "subtitleRu", widget: "string", required: false }
+              - { label: "Difficulty", name: "difficulty", widget: "select", options: ["easy", "medium", "hard"], required: false }
+              - { label: "Text", name: "text", widget: "text" }
+              - { label: "Text (RU)", name: "textRu", widget: "text", required: false }
+              - { label: "YouTube URL", name: "url", widget: "string" }
+              - { label: "Thumbnail", name: "thumbnail", widget: "image", required: false }
