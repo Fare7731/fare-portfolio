@@ -2,7 +2,6 @@ backend:
   name: github
   repo: FareEditor/FareOS
   branch: main
-  base_url: https://is-sveltia-cms-auth.vercel.app
 
 media_folder: "public/pic"
 public_folder: "/pic"
