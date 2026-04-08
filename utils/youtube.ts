@@ -4,10 +4,12 @@
 export const getEmbedUrl = (url: string): string => {
   let videoId = '';
   
-  if (url.includes('youtu.be/')) {
-    videoId = url.split('youtu.be/')[1].split('?')[0];
+  if (url.includes('youtube.com/shorts/')) {
+    videoId = url.split('shorts/')[1].split('?')[0].split('&')[0];
+  } else if (url.includes('youtu.be/')) {
+    videoId = url.split('youtu.be/')[1].split('?')[0].split('&')[0];
   } else if (url.includes('youtube.com/watch?v=')) {
-    videoId = url.split('v=')[1].split('&')[0];
+    videoId = url.split('v=')[1].split('&')[0].split('?')[0];
   } else {
     // Fallback if already an embed or unknown format
     return url;
