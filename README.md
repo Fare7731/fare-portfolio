@@ -70,6 +70,9 @@ To run this project locally on your machine, follow these steps:
 
 ## 📄 License
 
-This project is open-source and available under the [CC-BY-4.0 License](LICENSE). 
+This project is distributed under a dual license:
 
-*Note: The personal branding, video content, images, and text copy belong to Fare (Eugene) and are fully copyrighted. Feel free to fork the code, but please replace the personal data and videos with your own.*
+* **Program code** (HTML, CSS, JS, and scripts) is available under the [GPL-3.0](./LICENSE).
+* **Website content** (article texts, photographs, graphics, and media files) is available under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](./LICENSE-CONTENT).
+
+© 2026 Fare. All rights reserved
