@@ -93,7 +93,8 @@ const WorkspaceLayer: React.FC<WorkspaceLayerProps> = ({ isActive, activeSection
           onClose={onClose}
           isClosing={isClosing}
           resizable={renderedSection === 'Vertical Videos'}
-          initialHeight={renderedSection === 'Vertical Videos' ? '80vh' : '65vh'}
+          // Window Height
+          initialHeight={renderedSection === 'Vertical Videos' ? '80vh' : '75vh'}
         >
           {renderContent(renderedSection)}
         </WindowContainer>
