@@ -5,7 +5,6 @@ import WindowContainer from './components/WindowContainer';
 import MobileView from './components/MobileView';
 import AboutSection from './components/sections/AboutSection';
 import VideoShowcase from './components/sections/VideoShowcase';
-import VerticalShowcase from './components/sections/VerticalShowcase';
 import ContactSection from './components/sections/ContactSection';
 import TerminalSection from './components/sections/TerminalSection';
 import LocalizedText from './components/LocalizedText';
@@ -15,7 +14,6 @@ import portfolioData from './data/portfolio.json';
 const SECTION_NAMES_RU: Record<string, string> = {
   'About Me': 'Обо мне',
   'Full-Length Videos': 'Горизонтальные видео',
-  'Vertical Videos': 'Вертикальные видео',
   'Motion Graphics': 'Motion-дизайн',
   'Contact Me': 'Контакты',
   'Terminal': 'Консоль'
@@ -66,8 +64,6 @@ const WorkspaceLayer: React.FC<WorkspaceLayerProps> = ({ isActive, activeSection
         return <AboutSection key="about" onContactClick={() => onSectionChange('Contact Me')} />;
       case 'Full-Length Videos':
         return videoData ? <VideoShowcase key="fl" videos={videoData.fullLength} /> : <div className="p-8 text-slate-400 font-mono text-sm animate-pulse">Loading configuration...</div>;
-      case 'Vertical Videos':
-        return videoData ? <VerticalShowcase key="v" videos={videoData.vertical} /> : <div className="p-8 text-slate-400 font-mono text-sm animate-pulse">Loading configuration...</div>;
       case 'Motion Graphics':
         return videoData ? <VideoShowcase key="mg" videos={videoData.motionGraphics} /> : <div className="p-8 text-slate-400 font-mono text-sm animate-pulse">Loading configuration...</div>;
       case 'Contact Me':
@@ -92,9 +88,9 @@ const WorkspaceLayer: React.FC<WorkspaceLayerProps> = ({ isActive, activeSection
           } 
           onClose={onClose}
           isClosing={isClosing}
-          resizable={renderedSection === 'Vertical Videos'}
+          resizable={false}
           // Window Height
-          initialHeight={renderedSection === 'Vertical Videos' ? '80vh' : '75vh'}
+          initialHeight="75vh"
         >
           {renderContent(renderedSection)}
         </WindowContainer>

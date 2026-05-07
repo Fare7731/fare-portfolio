@@ -20,4 +20,4 @@ export interface VideoData {
   motionGraphics: VideoItem[];
 }
 
-export type SectionType = 'About Me' | 'Full-Length Videos' | 'Vertical Videos' | 'Motion Graphics' | 'Contact Me' | 'Terminal';
+export type SectionType = 'About Me' | 'Full-Length Videos' | 'Motion Graphics' | 'Contact Me' | 'Terminal';

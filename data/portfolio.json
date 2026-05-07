@@ -10,7 +10,7 @@
       "text": "Content doesn't always have to be in the SDAF format. Even a minimalist visual style can be appealing. In this video, I demonstrated that.",
       "textRu": "Контент не всегда должен быть в сдвг формате. Даже минималистичный визуал может быть привлекательным. В этом видео я это показал",
       "url": "https://youtu.be/kli9SjiCXG4?si=aPhEn34GGnS9R6ls",
-      "thumbnail": "/pic/fl-1.png"
+      "thumbnail": "/pic/fl-1.webp"
     },
     {
       "id": "fl-2",
@@ -22,42 +22,7 @@
       "text": "I turned a boring video with poor delivery into something enjoyable to watch. Don't believe me? Check it out yourself and see.",
       "textRu": "Превратил скучный ролик с убитой подачей в нечто которое приятно смотреть. Не веришь? Посмотри сам и увидишь",
       "url": "https://youtu.be/kquBMQTlAqA?si=9AP84Z6MBmNkGko-",
-      "thumbnail": "/pic/fl-2.png"
-    }
-  ],
-  "vertical": [
-    {
-      "id": "v-1",
-      "title": "Simply About the Complex",
-      "titleRu": "Просто о сложном",
-      "subtitle": "",
-      "subtitleRu": "",
-      "text": "When you need to make a boring lecture beautiful",
-      "textRu": "Превращение нёрдной лекции в качественную единицу контента",
-      "url": "https://youtu.be/ruGOtcqJ5sg?si=_Sf1plwtZwr2us8h",
-      "thumbnail": "/pic/v-1.png"
-    },
-    {
-      "id": "v-2",
-      "title": "From simple to detailed",
-      "titleRu": "От простого к подробному",
-      "subtitle": "",
-      "subtitleRu": "",
-      "text": "How to attract users to a full-length episode with a single vertical video",
-      "textRu": "Как одним рилсом привлечь внимание юзера к полноценному выпуску",
-      "url": "https://youtube.com/shorts/eGB98dTc6LQ?si=Ra8oD8kAaQ-bdSEr",
-      "thumbnail": "/pic/превка (0-00-02-21).webp"
-    },
-    {
-      "id": "v-3",
-      "title": "Minimalism as a Style",
-      "titleRu": "Минимализм в качестве стиля",
-      "subtitle": "",
-      "subtitleRu": "",
-      "text": "A good video doesn't always have to be visually complex.",
-      "textRu": "Хорошее видео не всегда должно быть визуально сложным.",
-      "url": "https://youtu.be/Vtl5zdUicEI?si=GUk8WE8dsgzI5-5i",
-      "thumbnail": "/pic/v-3.png"
+      "thumbnail": "/pic/fl-2.webp"
     }
   ],
   "motionGraphics": [
@@ -71,7 +36,7 @@
       "text": "The idea for this animation came from Max.Mov's 8-hour video on setting up Windows 11, where he created a similar system presentation at the beginning.",
       "textRu": "Идея этой анимации пришла из видео Max.Mov о настройке Windows 11 в течение 8 часов, где он сделал аналогичную презентацию своей системы в начале.",
       "url": "https://youtu.be/Vu2K-jwWQys",
-      "thumbnail": "/pic/mg-1.png"
+      "thumbnail": "/pic/mg-1.webp"
     },
     {
       "id": "mg-2",
@@ -83,7 +48,7 @@
       "text": "I'm constantly improving my workflow. If the right tool doesn't exist, I create it myself. That's how I created this plugin and its trailer.",
       "textRu": "Я постоянно улучшаю свой воркфлоу. Если нужного инструмента нет - я его создаю сам. Так я создал этот плагин и трейлер к нему",
       "url": "https://youtu.be/VnjO_-MVVsw",
-      "thumbnail": "/pic/No files_Изображение.webp"
+      "thumbnail": "/pic/mg-2.webp"
     }
   ]
 }

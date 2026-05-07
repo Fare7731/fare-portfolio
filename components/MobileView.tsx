@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { SectionType, VideoData } from '../types';
 import AboutSection from './sections/AboutSection';
 import VideoShowcase from './sections/VideoShowcase';
-import VerticalShowcase from './sections/VerticalShowcase';
 import ContactSection from './sections/ContactSection';
 import LocalizedText from './LocalizedText';
 import { useLanguage } from '../LanguageContext';
@@ -14,7 +13,6 @@ interface MobileViewProps {
 const sections: SectionType[] = [
   'About Me',
   'Full-Length Videos',
-  'Vertical Videos',
   'Motion Graphics',
   'Contact Me'
 ];
@@ -22,7 +20,6 @@ const sections: SectionType[] = [
 const SECTION_NAMES_RU: Record<string, string> = {
   'About Me': 'Обо мне',
   'Full-Length Videos': 'Длинные видео',
-  'Vertical Videos': 'Вертикальные видео',
   'Motion Graphics': 'Моушн-графика',
   'Contact Me': 'Связаться со мной'
 };
@@ -95,8 +92,6 @@ const MobileView: React.FC<MobileViewProps> = ({ videoData }) => {
         return <AboutSection onContactClick={() => setCurrentIndex(sections.indexOf('Contact Me'))} />;
       case 'Full-Length Videos':
         return <VideoShowcase videos={videoData.fullLength} isMobileView={true} />;
-      case 'Vertical Videos':
-        return <VerticalShowcase videos={videoData.vertical} isMobileView={true} />;
       case 'Motion Graphics':
         return <VideoShowcase videos={videoData.motionGraphics} isMobileView={true} />;
       case 'Contact Me':

@@ -10,7 +10,6 @@ interface NavigationProps {
 const SECTIONS: SectionType[] = [
   'About Me',
   'Full-Length Videos',
-  'Vertical Videos',
   'Motion Graphics',
   'Contact Me'
 ];
@@ -18,7 +17,6 @@ const SECTIONS: SectionType[] = [
 const SECTION_NAMES_RU: Record<string, string> = {
   'About Me': 'Обо мне',
   'Full-Length Videos': 'Горизонтальные видео',
-  'Vertical Videos': 'Вертикальные видео',
   'Motion Graphics': 'Motion-дизайн',
   'Contact Me': 'Контакты'
 };
